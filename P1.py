@@ -13,16 +13,16 @@ def processar_pedido(dados_pedido: dict, enviar_email: bool) -> dict | bool | No
         com as informações processadas.
     
         Args:
-            d (dict): dicionário com os dados do pedido. Deve conter
+            dados_pedido (dict): dicionário com os dados do pedido. Deve conter
                 as chaves "n" (nome do produto), "p" (preço unitário),
                 "q" (quantidade) e "c" (código do produto).
-            env_mail (bool): indica se um e-mail de confirmação deve
+            enviar_mail (bool): indica se um e-mail de confirmação deve
                 ser enviado ao final do processamento.
     
         Returns:
             dict: dicionário com os dados processados, se tudo for válido.
             bool: False, se nome, preço ou quantidade forem inválidos.
-            None: se nenhum dado for informado (d is None).
+            None: se nenhum dado for informado (dados_pedido is None).
             
         Raises:
         KeyError: se o dicionário 'dados_pedido' não contiver alguma
@@ -83,6 +83,5 @@ try:
     dados_entrada = {"c": "101", "n": "Teclado Mecânico", "p": 150.0, "q": 8}
     resultado_processamento = processar_pedido(dados_entrada, enviar_email=True)
     print("Resultado:", resultado_processamento)
-except:
-    print("Ocorreu algum erro no sistema.")
-
+except (KeyError, ValueError) as erro:
+    print("Ocorreu um erro ao processar o pedido:", erro)
