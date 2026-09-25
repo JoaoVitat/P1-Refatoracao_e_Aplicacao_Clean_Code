@@ -16,7 +16,7 @@ def processar_pedido(dados_pedido: dict, enviar_email: bool) -> dict | bool | No
             dados_pedido (dict): dicionário com os dados do pedido. Deve conter
                 as chaves "n" (nome do produto), "p" (preço unitário),
                 "q" (quantidade) e "c" (código do produto).
-            enviar_mail (bool): indica se um e-mail de confirmação deve
+            enviar_email (bool): indica se um e-mail de confirmação deve
                 ser enviado ao final do processamento.
     
         Returns:
