@@ -4,7 +4,7 @@ PERCENTUAL_DESCONTO = 0.90
 
 
 # Função que processa e cadastra o produto/pedido
-def processar_pedido(dados_pedido: dict, enviar_email: bool) -> dict | bool | None:
+def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bool | None:
     """
         Processa e cadastra um pedido de e-commerce.
     
