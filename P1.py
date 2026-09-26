@@ -1,9 +1,7 @@
-# Constantes para eliminar valores mágicos
 LIMITE_DESCONTO = 1000.0
 PERCENTUAL_DESCONTO = 0.90
 
 
-# Função que processa e cadastra o produto/pedido
 def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bool | None:
     """
         Processa e cadastra um pedido de e-commerce.
@@ -31,42 +29,32 @@ def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bo
             para um número inteiro.
             
     """
-    # verifica se o pedido tem dados
     if dados_pedido is None:
         print("Erro")
         return None
 
-    # pega o nome e preco
     nome = dados_pedido["n"]
     preco = dados_pedido["p"]
     quantidade = dados_pedido["q"]
 
-    # valida nome
     if nome == "":
         print("Nome invalido")
         return False
 
-    # valida preco e quantidade
     if preco <= 0 or quantidade <= 0:
         print("Preco ou quantidade invalida")
         return False
 
-    # calcula o total
     total_calculado = preco * quantidade
 
-    # aplica desconto se for acima de 1000
     if total_calculado > LIMITE_DESCONTO:
-        # aplica 10% de desconto
         total_calculado = total_calculado * PERCENTUAL_DESCONTO
 
-    # converte codigo para inteiro
     codigo_pedido = int(dados_pedido["c"])
 
-    # exibe se envia email
     if enviar_email:
         print("Enviando e-mail de confirmacao para o pedido...")
 
-    # cria o dicionario do produto processado
     pedido_processado = {
         "codigo": codigo_pedido,
         "nome": nome,
@@ -77,8 +65,6 @@ def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bo
 
     return pedido_processado
 
-
-# Teste do código
 try:
     dados_entrada = {"c": "101", "n": "Teclado Mecânico", "p": 150.0, "q": 8}
     resultado_processamento = processar_pedido(dados_entrada, enviar_email=True)
