@@ -1,32 +1,28 @@
-LIMITE_DESCONTO = 1000.0
-PERCENTUAL_DESCONTO = 0.10
+LIMITE_DESCONTO: float = 1000.0
+PERCENTUAL_DESCONTO: float = 0.10
 
-def processar_pedido(dados_pedido: dict [str, int, float]) -> dict [int | float | None]:
+def processar_pedido(dados_pedido: dict[str, str | int | float]) -> dict[str, str | int | float]:
     """
-        Processa e cadastra um pedido de e-commerce.
-    
-        Valida os dados do pedido recebido, calcula o valor total
-        (aplicando desconto quando aplicável) e retorna um dicionário
-        com as informações processadas.
-    
-        Args:
-            dados_pedido (dict): dicionário com os dados do pedido. Deve conter
-                as chaves "n" (nome do produto), "p" (preço unitário),
-                "q" (quantidade) e "c" (código do produto).
-            enviar_email (bool): indica se um e-mail de confirmação deve
-                ser enviado ao final do processamento.
-    
-        Returns:
-            dict: dicionário com os dados processados, se tudo for válido.
-            bool: False, se nome, preço ou quantidade forem inválidos.
-            None: se nenhum dado for informado (dados_pedido is None).
-            
-        Raises:
-        KeyError: se o dicionário 'dados_pedido' não contiver alguma
-            das chaves esperadas ("nome", "preco", "quantidade" ou "codigo_produto").
-        ValueError: se o valor da chave "c" não puder ser convertido
-            para um número inteiro.
-            
+    Processa e cadastra um pedido de e-commerce.
+
+    Valida os dados do pedido recebido, calcula o valor total
+    (aplicando desconto quando o total passa do limite) e retorna
+    um dicionário com as informações processadas.
+
+    Args:
+        dados_pedido (dict[str, str | int | float]): dados do pedido.
+            Deve conter as chaves "codigo_pedido", "nome", "preco"
+            e "quantidade".
+
+    Returns:
+        dict[str, str | int | float]: dicionário com as chaves "codigo",
+            "nome", "preco", "quantidade" e "total_calculado".
+
+    Raises:
+        ValueError: se faltar alguma chave obrigatória, se algum valor
+            não puder ser convertido para o tipo esperado, se o nome
+            estiver vazio ou se o preço ou a quantidade forem menores
+            ou iguais a zero.
     """
     try:
         codigo_pedido = int(dados_pedido["codigo_pedido"])
@@ -64,13 +60,14 @@ def processar_pedido(dados_pedido: dict [str, int, float]) -> dict [int | float 
 
     return pedido_processado
 
-dados_teste = {
+dados_teste: dict[str, str | int | float] = {
     "codigo_pedido": 67,
     "nome": "Notebook alienware 8090",
     "preco": 80000.00,
     "quantidade": 3,
 }
-def enviar_email():
+def enviar_email() -> None:
+    """Envia o e-mail de confirmação do pedido (ainda não implementado)."""
     pass
 
 try:
