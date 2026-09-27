@@ -1,8 +1,7 @@
 LIMITE_DESCONTO = 1000.0
-PERCENTUAL_DESCONTO = 0.90
+PERCENTUAL_DESCONTO = 0.10
 
-
-def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bool | None:
+def processar_pedido(dados_pedido: dict [str, int, float]) -> dict [int | float | None]:
     """
         Processa e cadastra um pedido de e-commerce.
     
@@ -24,50 +23,57 @@ def processar_pedido(dados_pedido: dict | None, enviar_email: bool) -> dict | bo
             
         Raises:
         KeyError: se o dicionário 'dados_pedido' não contiver alguma
-            das chaves esperadas ("n", "p", "q" ou "c").
+            das chaves esperadas ("nome", "preco", "quantidade" ou "codigo_produto").
         ValueError: se o valor da chave "c" não puder ser convertido
             para um número inteiro.
             
     """
-    if dados_pedido is None:
-        print("Erro")
-        return None
+    try:
+        codigo_pedido = int(dados_pedido["codigo_pedido"])
+        nome = str(dados_pedido["nome"].strip())
+        preco = float(dados_pedido["preco"])
+        quantidade = int(dados_pedido["quantidade"])
 
-    nome = dados_pedido["n"]
-    preco = dados_pedido["p"]
-    quantidade = dados_pedido["q"]
+    except (KeyError) as erro:
+        raise ValueError(f"Campo obrigatório ausente: {erro}")
+    
+    except (TypeError, ValueError) as erro:
+        raise ValueError(f"erro nos dados do pedido: {erro}")
 
-    if nome == "":
-        print("Nome invalido")
-        return False
+    if not nome:
+        raise ValueError("o nome do produto não pode ser vazio.")
 
-    if preco <= 0 or quantidade <= 0:
-        print("Preco ou quantidade invalida")
-        return False
+    if preco <= 0 :
+        raise ValueError("O preço deve ser maior que zero")
+
+    if quantidade <= 0:
+        raise ValueError("Quantidade deve ser maior que zero.")
 
     total_calculado = preco * quantidade
 
     if total_calculado > LIMITE_DESCONTO:
-        total_calculado = total_calculado * PERCENTUAL_DESCONTO
-
-    codigo_pedido = int(dados_pedido["c"])
-
-    if enviar_email:
-        print("Enviando e-mail de confirmacao para o pedido...")
+        total_calculado *=  (1 - PERCENTUAL_DESCONTO) 
 
     pedido_processado = {
         "codigo": codigo_pedido,
         "nome": nome,
-        "preco_unitario": preco,
+        "preco": preco,
         "quantidade": quantidade,
         "total_calculado": total_calculado
     }
 
     return pedido_processado
 
+dados_teste = {
+    "codigo_pedido": 67,
+    "nome": "Notebook alienware 8090",
+    "preco": 80000.00,
+    "quantidade": 3,
+}
+def enviar_email():
+    pass
+
 try:
-    dados_entrada = {"c": "101", "n": "Teclado Mecânico", "p": 150.0, "q": 8}
-    resultado_processamento = processar_pedido(dados_entrada, enviar_email=True)
-    print("Resultado:", resultado_processamento)
-except (KeyError, ValueError) as erro:
-    print("Ocorreu um erro ao processar o pedido:", erro)
+    print(processar_pedido(dados_teste))
+except ValueError as erro:
+    raise ValueError(f"Erro: {erro}")
