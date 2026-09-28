@@ -67,7 +67,6 @@ dados_teste: dict[str, str | int | float] = {
     "quantidade": 3,
 }
 def enviar_email() -> None:
-    """Envia o e-mail de confirmação do pedido (ainda não implementado)."""
     pass
 
 try:
